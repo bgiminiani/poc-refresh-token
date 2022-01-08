@@ -1,31 +1,30 @@
+import IEncrypter from "./IEncrypter";
+import User from "./User";
+
 export default class MakeLogin {
   users: { email: string; password: string; }[];
+  encrypter: IEncrypter;
 
-  constructor() {
+  constructor(encrypter: IEncrypter) {
+    this.encrypter = encrypter; 
     this.users = [
       {
         email: 'ana@mail.com',
-        password: '$2+#12345',
+        password: '12345',
       },
     ];
   }
 
-  execute(email: string, password: string) {
-    const user: any = this.users.find(user => user.email === email && user.password === this.generateProtectedPassword(password));
-    if (!user) throw new Error('User not found');
-    user.accessToken = '#@#$%ˆ&';
-    user.refreshToken = '#@#$%ˆ&';
+  async execute(email: string, password: string) {
+    const user = new User(email, password);
+    const encryptedPassword = await this.encrypter.encrypt(user.password);
+    const findUser: any = this.users.find(findUser => findUser.email === user.email && findUser.password === encryptedPassword);
+    if (!findUser) throw new Error('User not found');
+    const { accessToken, refreshToken } = user;
     return {
-      email: user.email,
-      accessToken: user.accessToken,
-      refreshToken: user.refreshToken,
+      email,
+      accessToken,
+      refreshToken,
     };
   }
-
-  generateProtectedPassword(password: string): string {
-    if (isNaN(Number(password[0]))) throw new Error('User not found');
-    const protectedPassword = `$2+#${password}`;
-    return protectedPassword;
-  }
-
 }

@@ -1,49 +1,65 @@
+import EncryptMock from "./EncryptMock";
 import MakeLogin from "./MakeLogin";
+import User from "./User";
 
-test('Não deve fazer login de usuário inexistente', () => {
+test('Não deve fazer login de usuário inexistente', async () => {
   const input = {
     email: 'anamaria@mail.com',
     password: '12345',
   };
-  const makeLogin = new MakeLogin();
-  expect(() => makeLogin.execute(input.email, input.password)).toThrow(new Error('User not found'));
+  const user = new User(input.email, input.password);
+  const encrypter = new EncryptMock();
+  const makeLogin = new MakeLogin(encrypter);
+  await expect(makeLogin.execute(user.email, user.password))
+    .rejects
+    .toThrow(new Error('User not found'));
 });
 
-test('Deve fazer login para usuário existente', () => {
+test('Deve fazer login para usuário existente', async () => {
   const input = {
     email: 'ana@mail.com',
     password: '12345',
   };
-  const makeLogin = new MakeLogin();
-  const user = makeLogin.execute(input.email, input.password);
-  expect(user.email).toBe(input.email);
+  const user = new User(input.email, input.password);
+  const encrypter = new EncryptMock();
+  const makeLogin = new MakeLogin(encrypter);
+  const output = await makeLogin.execute(user.email, user.password);
+  expect(output.email).toBe(output.email);
 });
 
-test('Deve gerar um token de acesso para o usuário, após fazer login', () => {
+test('Deve gerar um token de acesso para o usuário, após fazer login', async () => {
   const input = {
     email: 'ana@mail.com',
     password: '12345',
   };
-  const makeLogin = new MakeLogin();
-  const user = makeLogin.execute(input.email, input.password);
-  expect(user.accessToken).toBe('#@#$%ˆ&');
+  const user = new User(input.email, input.password);
+  const encrypter = new EncryptMock();
+  const makeLogin = new MakeLogin(encrypter);
+  const output = await makeLogin.execute(user.email, user.password);
+  expect(output.accessToken).toBe('#@#$%ˆ&');
 });
 
-test('Não deve fazer login de usuário com senha incorreta', () => {
+test('Não deve fazer login de usuário com senha inválida', async() => {
   const input = {
     email: 'ana@mail.com',
-    password: 'incorrect_password',
+    password: '',
   };
-  const makeLogin = new MakeLogin();
-  expect(() => makeLogin.execute(input.email, input.password)).toThrow(new Error('User not found'));
+  const user = new User(input.email, input.password)
+  const encrypter = new EncryptMock();
+  const makeLogin = new MakeLogin(encrypter);
+  await expect(makeLogin.execute(user.email, user.password))
+    .rejects
+    .toThrow(new Error('User not found'));
 });
 
-test('Deve gerar um token de atualização para o usuário, após fazer login', () => {
+test('Deve gerar um token de atualização para o usuário, após fazer login', async () => {
   const input = {
     email: 'ana@mail.com',
     password: '12345',
   };
-  const makeLogin = new MakeLogin();
-  const user = makeLogin.execute(input.email, input.password);
-  expect(user.refreshToken).toBe('#@#$%ˆ&');
+  const user = new User(input.email, input.password)
+  const encrypter = new EncryptMock();
+  const makeLogin = new MakeLogin(encrypter);
+  const output = await makeLogin.execute(user.email, user.password);
+  expect(output.refreshToken).toBe('#@#$%ˆ&');
 });
