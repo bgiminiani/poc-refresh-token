@@ -29,5 +29,11 @@ test('Deve gerar um token de acesso para o usuário, após fazer login', () => {
   expect(user.accessToken).toBe('#@#$%ˆ&');
 });
 
-test('Deve validar a senha do usuário', () => {
+test('Não deve fazer login de usuário com senha incorreta', () => {
+  const input = {
+    email: 'ana@mail.com',
+    password: 'incorrect_password',
+  };
+  const makeLogin = new MakeLogin();
+  expect(() => makeLogin.execute(input.email, input.password)).toThrow(new Error('User not found'));
 });

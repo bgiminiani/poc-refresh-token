@@ -5,19 +5,25 @@ export default class MakeLogin {
     this.users = [
       {
         email: 'ana@mail.com',
-        password: '12345',
+        password: '$2+#12345',
       },
     ];
   }
 
   execute(email: string, password: string) {
-    const user: any = this.users.find(user => user.email === email && user.password === password);
+    const user: any = this.users.find(user => user.email === email && user.password === this.generateProtectedPassword(password));
     if (!user) throw new Error('User not found');
     user.accessToken = '#@#$%ˆ&';
     return {
       email: user.email,
       accessToken: user.accessToken,
     };
+  }
+
+  generateProtectedPassword(password: string): string {
+    if (isNaN(Number(password[0]))) throw new Error('User not found');
+    const protectedPassword = `$2+#${password}`;
+    return protectedPassword;
   }
 
 }
