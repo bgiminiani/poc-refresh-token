@@ -18,3 +18,13 @@ test('Deve fazer login para usuário existente', () => {
   const user = makeLogin.execute(input.email, input.password);
   expect(user.email).toBe(input.email);
 });
+
+test('Deve gerar um token de acesso para o usuário, após fazer login', () => {
+  const input = {
+    email: 'ana@mail.com',
+    password: '12345',
+  };
+  const makeLogin = new MakeLogin();
+  const user = makeLogin.execute(input.email, input.password);
+  expect(user.token).toBe('#@#$%ˆ&');
+});
