@@ -13,10 +13,10 @@ export default class MakeLogin {
   execute(email: string, password: string) {
     const user: any = this.users.find(user => user.email === email && user.password === password);
     if (!user) throw new Error('User not found');
-    user.token = '#@#$%ˆ&';
+    user.accessToken = '#@#$%ˆ&';
     return {
       email: user.email,
-      token: user.token,
+      accessToken: user.accessToken,
     };
   }
 

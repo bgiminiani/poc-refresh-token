@@ -26,5 +26,8 @@ test('Deve gerar um token de acesso para o usuário, após fazer login', () => {
   };
   const makeLogin = new MakeLogin();
   const user = makeLogin.execute(input.email, input.password);
-  expect(user.token).toBe('#@#$%ˆ&');
+  expect(user.accessToken).toBe('#@#$%ˆ&');
+});
+
+test('Deve validar a senha do usuário', () => {
 });
