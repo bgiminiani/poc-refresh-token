@@ -4,8 +4,8 @@ export default class MakeLogin {
   constructor() {
     this.users = [
       {
-        email: '',
-        password: '',
+        email: 'ana@mail.com',
+        password: '12345',
       },
     ];
   }
@@ -13,5 +13,8 @@ export default class MakeLogin {
   execute(email: string, password: string) {
     const user = this.users.find(user => user.email === email && user.password === password);
     if (!user) throw new Error('User not found');
+    return {
+      email: user.email,
+    };
   }
 }
