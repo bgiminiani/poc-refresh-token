@@ -14,9 +14,11 @@ export default class MakeLogin {
     const user: any = this.users.find(user => user.email === email && user.password === this.generateProtectedPassword(password));
     if (!user) throw new Error('User not found');
     user.accessToken = '#@#$%ˆ&';
+    user.refreshToken = '#@#$%ˆ&';
     return {
       email: user.email,
       accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
     };
   }
 
