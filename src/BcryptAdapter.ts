@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import IEncrypter from "./IEncrypter";
+import IHashComparer from './IHashComparer';
 
-export default class BcryptAdapter implements IEncrypter{
+export default class BcryptAdapter implements IHashComparer{
   constructor(readonly salt: number) {
     this.salt = salt;
   }
